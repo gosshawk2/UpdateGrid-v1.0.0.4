@@ -63,6 +63,7 @@ Partial Class UpdateGrid
         Me.btnInsert.TabIndex = 3
         Me.btnInsert.Text = "Insert"
         Me.btnInsert.UseVisualStyleBackColor = True
+        Me.btnInsert.Visible = False
         '
         'btnClose
         '

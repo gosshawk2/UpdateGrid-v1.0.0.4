@@ -195,7 +195,7 @@
         If DBVersion = "MYSQL" Then
             UpdateDBfromGridDan()
         Else
-            UpdateDBfromGrid()
+            UpdateDBfromGridDan()
         End If
 
         'PopulateForm()
