@@ -43,7 +43,7 @@ Partial Class UpdateGrid
         Me.dgvUpdateGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvUpdateGrid.Location = New System.Drawing.Point(1, 48)
         Me.dgvUpdateGrid.Name = "dgvUpdateGrid"
-        Me.dgvUpdateGrid.Size = New System.Drawing.Size(594, 244)
+        Me.dgvUpdateGrid.Size = New System.Drawing.Size(782, 326)
         Me.dgvUpdateGrid.TabIndex = 0
         '
         'pnlButtons
@@ -55,7 +55,7 @@ Partial Class UpdateGrid
         Me.pnlButtons.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlButtons.Location = New System.Drawing.Point(0, 0)
         Me.pnlButtons.Name = "pnlButtons"
-        Me.pnlButtons.Size = New System.Drawing.Size(597, 45)
+        Me.pnlButtons.Size = New System.Drawing.Size(785, 45)
         Me.pnlButtons.TabIndex = 1
         '
         'btnInsert
@@ -98,9 +98,9 @@ Partial Class UpdateGrid
         'stsUpdateGrid
         '
         Me.stsUpdateGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.stsUpdateGridLabel1})
-        Me.stsUpdateGrid.Location = New System.Drawing.Point(0, 272)
+        Me.stsUpdateGrid.Location = New System.Drawing.Point(0, 377)
         Me.stsUpdateGrid.Name = "stsUpdateGrid"
-        Me.stsUpdateGrid.Size = New System.Drawing.Size(597, 22)
+        Me.stsUpdateGrid.Size = New System.Drawing.Size(785, 22)
         Me.stsUpdateGrid.TabIndex = 2
         '
         'stsUpdateGridLabel1
@@ -112,7 +112,7 @@ Partial Class UpdateGrid
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(597, 294)
+        Me.ClientSize = New System.Drawing.Size(785, 399)
         Me.Controls.Add(Me.stsUpdateGrid)
         Me.Controls.Add(Me.pnlButtons)
         Me.Controls.Add(Me.dgvUpdateGrid)

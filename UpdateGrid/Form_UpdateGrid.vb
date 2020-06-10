@@ -50,7 +50,7 @@
         'dgvUpdateGrid.AllowUserToDeleteRows = True
         'dgvUpdateGrid.MultiSelect = True
         'dgvUpdateGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        dgvUpdateGrid.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Bottom
+        'dgvUpdateGrid.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Bottom
 
         'FieldAttributes.ClearSelectedAttributesList()
 
@@ -81,6 +81,7 @@
             dgvUpdateGrid.Columns.Add(dgvCheckUpdate)
             dgvUpdateGrid.Columns.Add("UPDATED2", "UPDATED2")
             Lock_RecordColumn()
+            RightAlignNumerics()
         Catch ex As Exception
             Cursor = Cursors.Default
             MsgBox("Error in PopulateForm(): " & ex.Message)
@@ -93,6 +94,26 @@
         dgvUpdateGrid.Columns("Record ID").ReadOnly = True
         dgvUpdateGrid.Columns("Profit").ReadOnly = True
         dgvUpdateGrid.Columns("Margin%").ReadOnly = True
+    End Sub
+
+    Sub RightAlignNumerics()
+        'For i As Integer = 0 To dgvUpdateGrid.Columns.Count - 1
+        'If IsNumeric(dgvUpdateGrid.Rows(1).Cells(i).Value) Then
+        'dgvUpdateGrid.Columns(i).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        'dgvUpdateGrid.Columns(i).DefaultCellStyle.Format = "N2"
+        'End If
+        'Next
+        dgvUpdateGrid.Columns("Record ID").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        dgvUpdateGrid.Columns("Record ID").DefaultCellStyle.Format = "N0"
+        dgvUpdateGrid.Columns("Selling Price").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        dgvUpdateGrid.Columns("Selling Price").DefaultCellStyle.Format = "N2"
+        dgvUpdateGrid.Columns("Current Price").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        dgvUpdateGrid.Columns("Current Price").DefaultCellStyle.Format = "N2"
+        dgvUpdateGrid.Columns("Profit").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        dgvUpdateGrid.Columns("Profit").DefaultCellStyle.Format = "N2"
+        dgvUpdateGrid.Columns("Margin%").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        dgvUpdateGrid.Columns("Margin%").DefaultCellStyle.Format = "N2"
+
     End Sub
 
     Private Sub ClickHandler(sender As Object, e As MouseEventArgs) Handles Me.MouseClick
