@@ -37,6 +37,9 @@ Partial Class UpdateGrid
         '
         'dgvUpdateGrid
         '
+        Me.dgvUpdateGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvUpdateGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvUpdateGrid.Location = New System.Drawing.Point(1, 48)
         Me.dgvUpdateGrid.Name = "dgvUpdateGrid"

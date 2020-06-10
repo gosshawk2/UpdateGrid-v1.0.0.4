@@ -14,8 +14,10 @@ Public Class UpdateGridDAL
             "trim(S21ItemCode) as ""S21 Item Code"", " &
             "trim(ItemDescription) as ""Item Description"", " &
             "SellingPrice as ""Selling Price"", " &
-            "CurrentPrice as ""Current Price"" " &
-            "FROM APEMaster"
+            "CurrentPrice as ""Current Price"", " &
+            "@@Profit as ""Profit"", " &
+            "@@Margin as ""Margin%"" " &
+            "FROM APEMastV01"
 
         If Len(Criteria) > 0 Then
             SQLStatement += " WHERE " & Criteria
@@ -115,7 +117,9 @@ Public Class UpdateGridDAL
                 "trim(S21ItemCode) as ""S21 Item Code"", " &
                 "trim(ItemDescription) as ""Item Description"", " &
                 "SellingPrice as ""Selling Price"", " &
-                "CurrentPrice as ""Current Price"" " &
+                "CurrentPrice as ""Current Price"", " &
+                "Profit as ""Profit"", " &
+                "Margin as ""Margin%"" " &
                 "FROM APEMaster"
 
             If Len(Criteria) > 0 Then
