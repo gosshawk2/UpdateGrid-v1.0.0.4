@@ -2,28 +2,38 @@
 Imports MySql.Data
 Imports MySql.Data.MySqlClient
 Public Class UpdateGridDAL
-    Function GetAPEMaster(ConnectString As String, Criteria As String) As DataTable
+
+    Function GetAPEMast(ConnectString As String, Criteria As String) As DataTable
         Dim SQLStatement As String
         Dim cn As New OdbcConnection(ConnectString)
         Dim cm As OdbcCommand = cn.CreateCommand 'Create a command object via the connection
 
-        GetAPEMaster = Nothing
+
+        GetAPEMast = Nothing
         'EPOUTILTST/APEMaster
         SQLStatement = "SELECT " &
+            "DV as ""DV"", " &
+            "SD as ""SD"", " &
             "RecordID as ""Record ID"", " &
             "trim(S21ItemCode) as ""S21 Item Code"", " &
+            "cata05 as ""Cat"", " &
+            "sect05 as ""Sect"", " &
+            "Page05 as ""Page"", " &
             "trim(ItemDescription) as ""Item Description"", " &
-            "SellingPrice as ""Selling Price"", " &
-            "CurrentPrice as ""Current Price"", " &
+            "trim(dssp35) as ""Supp Code"", " &
+            "trim(snam05) as ""Supplier Name"", " &
+            "NewBuyingPrice as ""Current Price"", " &
+            "NewSellingPrice as ""Selling Price"", " &
             "@@Profit as ""Profit"", " &
             "@@Margin as ""Margin%"" " &
-            "FROM APEMastV01"
+            "FROM APEMastV01 "
+
 
         If Len(Criteria) > 0 Then
             SQLStatement += " WHERE " & Criteria
         End If
-        SQLStatement += " ORDER BY RecordID"
-
+        SQLStatement += " ORDER BY RecordID "
+        SQLStatement += "fetch first 3000 rows only "
         cn.Open()
         cm.CommandTimeout = 0
         cm.CommandType = CommandType.Text
@@ -34,24 +44,25 @@ Public Class UpdateGridDAL
         Return ds.Tables(0)
     End Function
 
-    Public Function UpdateAPEMaster(
+    Public Function UpdateAPEMast(
                     ConnectString As String,
                     RecordID As Integer,
                     S21ItemCode As String,
                     ItemDescription As String,
-                    SellingPrice As Decimal,
-                    CurrentPrice As Decimal
+                    NewSellingPrice As Decimal,
+                    NewBuyingPrice As Decimal
 )
         Dim SQLStatement As String
         Dim SQLOK As Boolean = True
         Dim ReworkFlag As String = "0"
         Dim cn As New OdbcConnection(ConnectString)
 
+
         cn.Open()
         Dim cm As OdbcCommand = cn.CreateCommand 'Create a command object via the connection
         SQLStatement =
         "Select RecordID  " &
-        "From apemaster  " &
+        "From apemast  " &
         "Where RecordID =" & RecordID & " "
         cm.CommandTimeout = 0
         cm.CommandType = CommandType.Text
@@ -61,26 +72,23 @@ Public Class UpdateGridDAL
         da.Fill(ds)
         If ds.Tables(0).Rows.Count > 0 Then
             SQLStatement =
-            "Update ApeMaster " &
+            "Update ApeMast " &
             "set " &
             "S21ItemCode='" & S21ItemCode & "', " &
-            "ItemDescription='" & ItemDescription & "', " &
-            "SellingPrice=" & SellingPrice & ", " &
-            "CurrentPrice=" & CurrentPrice & " " &
+            "NewSellingPrice=" & NewSellingPrice & ", " &
+            "NewBuyingPrice=" & NewBuyingPrice & " " &
             "Where RecordID =" & RecordID & " "
         Else
             SQLStatement =
-            "Insert into APEMaster ( " &
+            "Insert into APEMast ( " &
             "S21ItemCode, " &
-            "ItemDescription, " &
-            "SellingPrice, " &
-            "CurrentPrice " &
+            "NewSellingPrice, " &
+            "NewBuyingPrice " &
             ")  " &
             "Values(" &
             "'" & S21ItemCode & "' , " &
-            "'" & ItemDescription & "' , " &
-            SellingPrice & ", " &
-            CurrentPrice & " " &
+            NewSellingPrice & ", " &
+            NewBuyingPrice & " " &
             ")"
         End If
         cm.CommandText = SQLStatement
@@ -94,6 +102,7 @@ Public Class UpdateGridDAL
         End Try
         Return (SQLOK)
     End Function
+
 
     Function GetAPEMaster_MYSQL(Criteria As String) As DataTable
         Dim SQLStatement As String

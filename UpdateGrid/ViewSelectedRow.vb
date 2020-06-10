@@ -12,6 +12,11 @@
     Sub PopulateForm(ByRef RowContent As Object)
         Dim ColumnName As String
         Dim ColumnText As String
+        Dim lblXPos As Integer
+        Dim lblYpos As Integer
+        Dim lblWidth As Integer
+        Dim txtXPos As Integer
+        Dim txtYpos As Integer
         Dim txtWidth As Integer
         Dim LastPos As Integer
         Dim arr() As String
@@ -23,14 +28,19 @@
             arr = Split(RowContent(i), "=")
             ColumnName = arr(0)
             ColumnText = arr(1)
-            txtWidth = 80
+            lblXPos = 400
+            lblYpos = 18 + (i * 30)
+            lblWidth = 60
+            txtXPos = 530
+            txtYpos = 15 + (i * 30)
+            txtWidth = 100
             If Len(ColumnText) > 20 Then
-                txtWidth = 100 + (Len(ColumnText) * 10)
+                txtWidth = 250
             End If
-            ctrl.AddFormControls(Me, "Label", "lblRecordID", ColumnName & ":", CStr(i + 1), 5 + (i * 105), 6, txtWidth, 0, Nothing, "", "")
-            ctrl.AddFormControls(Me, "Textbox_r", "txtRecordID", ColumnText, CStr(i + 1), 5 + (i * 105), 36, txtWidth, 0, Nothing, "", "")
+            ctrl.AddFormControls(Me, "Label", "lblRecordID", ColumnName & ":", CStr(i + 1), lblXPos, lblYpos, lblWidth, 20, Nothing, "", "")
+            ctrl.AddFormControls(Me, "Textbox_r", "txtRecordID", ColumnText, CStr(i + 1), txtXPos, txtYpos, txtWidth, 20, Nothing, "", "")
             LastPos = i
         Next
-        ctrl.AddFormControls(Me, "button", "btnClose", "Close", CStr(LastPos + 1), 5 + (LastPos * 105) + txtWidth + 10, 17, 50, 40, Nothing, "", "")
+        ctrl.AddFormControls(Me, "button", "btnClose", "Close", CStr(LastPos + 1), txtXPos, txtYpos + 30, 50, 40, Nothing, "", "")
     End Sub
 End Class

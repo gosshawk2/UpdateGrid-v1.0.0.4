@@ -3,8 +3,8 @@
     Public Sub AddFormControls(myForm As Form, ControlType As String, ControlName As String, InitialValue As String, TagNumber As String,
                         xx As Integer, yy As Integer, Width As Integer, Height As Integer,
                         Optional theImage As Image = Nothing,
-                        Optional ControlForecolourasRGBString As String = "Black",
-                        Optional ControlBACKcolourasRGBString As String = "AliceBlue")
+                        Optional ControlForecolourasRGBString As String = "Control",
+                        Optional ControlBACKcolourasRGBString As String = "ControlText")
         'Dim tempControl As clsControls 'replaces mycontrol = OR tempControl = myControl
         Dim myPanel As Panel
         Dim ControlForeColour As Color

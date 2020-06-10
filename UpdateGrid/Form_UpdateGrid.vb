@@ -6,6 +6,7 @@
     Private _FirstEntry As String
     Private _LastEntry As String
     Private _LastEditRow As Integer
+    Private _GridVerticalScrollOffset As Integer
     Public Shared DBVersion As String
     Public Shared ThemeSelection As Integer
 
@@ -38,6 +39,15 @@
         End Get
         Set(value As Integer)
             _LastEditRow = value
+        End Set
+    End Property
+
+    Property GridVerticalScrollOffset As Integer
+        Get
+            Return _GridVerticalScrollOffset
+        End Get
+        Set(value As Integer)
+            _GridVerticalScrollOffset = value
         End Set
     End Property
 
@@ -76,15 +86,18 @@
 
         dgvCheckUpdate.HeaderText = "UPDATED"
         dgvCheckUpdate.Name = "UPDATED"
-
+        stsUpdateGridLabel1.Text = "Initialisation..."
         Try
             dgvUpdateGrid.Columns.Clear()
-
+            stsUpdateGridLabel1.Text = "Get Data..."
+            MsgBox("GET DATA....")
             If DBVersion = "MYSQL" Then
                 dt = DAL.GetAPEMaster_MYSQL("")
             Else
-                dt = DAL.GetAPEMaster(GlobalSession.ConnectString, "")
+                dt = DAL.GetAPEMast(GlobalSession.ConnectString, "")
             End If
+            stsUpdateGridLabel1.Text = "Get Data...Completed. Populate Grid..."
+            MsgBox("Completed... now Populate Grid...")
             If dt IsNot Nothing Then
                 dgvUpdateGrid.DataSource = dt
                 stsUpdateGridLabel1.Text = "Records: " & CStr(dt.Rows.Count)
@@ -92,11 +105,15 @@
             dgvUpdateGrid.Columns.Add(dgvCheckUpdate)
             dgvUpdateGrid.Columns.Add("UPDATED2", "UPDATED2")
             Lock_RecordColumn()
-            RightAlignNumerics()
-            If Me.LastEditRow > 0 Then
-                'dgvUpdateGrid.SelectedRows.Item(Me.LastEditRow).Selected = True
-            End If
+            MsgBox("GRID POPULATED... Now format Grid..")
+            stsUpdateGridLabel1.Text = "Format Grid..."
+            'RightAlignNumerics()
 
+            If Me.LastEditRow > 0 Then
+                dgvUpdateGrid.Rows(Me.LastEditRow).Selected = True
+            End If
+            stsUpdateGridLabel1.Text = "Records: " & CStr(dt.Rows.Count)
+            MsgBox("Completed...")
         Catch ex As Exception
             Cursor = Cursors.Default
             MsgBox("Error in PopulateForm(): " & ex.Message)
@@ -117,7 +134,7 @@
         'dgvUpdateGrid.Columns(i).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         'dgvUpdateGrid.Columns(i).DefaultCellStyle.Format = "N2"
         'End If
-        'Next
+        'Nextsub
         dgvUpdateGrid.Columns("Record ID").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
         dgvUpdateGrid.Columns("Record ID").DefaultCellStyle.Format = "N0"
         dgvUpdateGrid.Columns("Selling Price").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
@@ -158,7 +175,7 @@
             End If
 
             If Trim(dgvUpdateGrid.Rows(i).Cells("S21 Item Code").Value) <> Nothing Then
-                DAL.UpdateAPEMaster(
+                DAL.UpdateAPEMast(
                         GlobalSession.ConnectString,
                         RecordID,
                         Trim(dgvUpdateGrid.Rows(i).Cells("S21 Item Code").Value.ToString),
@@ -239,7 +256,7 @@
                     If DBVersion = "MYSQL" Then
                         DAL.UpdateAPEMaster_MYSQL(RecordID, strS21ItemCode, strItemDescription, strSellingPrice, strCurrentPrice)
                     Else
-                        DAL.UpdateAPEMaster(GlobalSession.ConnectString, RecordID, strS21ItemCode, strItemDescription, strSellingPrice, strCurrentPrice)
+                        DAL.UpdateAPEMast(GlobalSession.ConnectString, RecordID, strS21ItemCode, strItemDescription, strSellingPrice, strCurrentPrice)
                     End If
                 End If
             End If
@@ -298,6 +315,7 @@
                     dgvUpdateGrid.Rows(e.RowIndex).Cells("UPDATED").Value = True
                     dgvUpdateGrid.Rows(e.RowIndex).Cells("UPDATED2").Value = "1"
                     LastEditRow = e.RowIndex
+                    Me.GridVerticalScrollOffset = dgvUpdateGrid.VerticalScrollingOffset
                 End If
             End If
         End If
