@@ -97,6 +97,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DGComponentManager.vb" />
     <Compile Include="Form_UpdateGrid.Designer.vb">
       <DependentUpon>Form_UpdateGrid.vb</DependentUpon>
     </Compile>
@@ -119,6 +120,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="UpdateGridDAL.vb" />
+    <Compile Include="ViewSelectedRow.Designer.vb">
+      <DependentUpon>ViewSelectedRow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ViewSelectedRow.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form_UpdateGrid.resx">
@@ -129,6 +136,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewSelectedRow.resx">
+      <DependentUpon>ViewSelectedRow.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

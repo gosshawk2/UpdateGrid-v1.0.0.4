@@ -22,6 +22,7 @@ Partial Class UpdateGrid
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.dgvUpdateGrid = New System.Windows.Forms.DataGridView()
         Me.pnlButtons = New System.Windows.Forms.Panel()
         Me.btnInsert = New System.Windows.Forms.Button()
@@ -30,9 +31,12 @@ Partial Class UpdateGrid
         Me.btnRefresh = New System.Windows.Forms.Button()
         Me.stsUpdateGrid = New System.Windows.Forms.StatusStrip()
         Me.stsUpdateGridLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.CRUDUpdateGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ViewRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgvUpdateGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlButtons.SuspendLayout()
         Me.stsUpdateGrid.SuspendLayout()
+        Me.CRUDUpdateGrid.SuspendLayout()
         Me.SuspendLayout()
         '
         'dgvUpdateGrid
@@ -108,6 +112,18 @@ Partial Class UpdateGrid
         Me.stsUpdateGridLabel1.Name = "stsUpdateGridLabel1"
         Me.stsUpdateGridLabel1.Size = New System.Drawing.Size(0, 17)
         '
+        'CRUDUpdateGrid
+        '
+        Me.CRUDUpdateGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewRowToolStripMenuItem})
+        Me.CRUDUpdateGrid.Name = "CRUDUpdateGrid"
+        Me.CRUDUpdateGrid.Size = New System.Drawing.Size(181, 48)
+        '
+        'ViewRowToolStripMenuItem
+        '
+        Me.ViewRowToolStripMenuItem.Name = "ViewRowToolStripMenuItem"
+        Me.ViewRowToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ViewRowToolStripMenuItem.Text = "View"
+        '
         'UpdateGrid
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -122,6 +138,7 @@ Partial Class UpdateGrid
         Me.pnlButtons.ResumeLayout(False)
         Me.stsUpdateGrid.ResumeLayout(False)
         Me.stsUpdateGrid.PerformLayout()
+        Me.CRUDUpdateGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -135,4 +152,6 @@ Partial Class UpdateGrid
     Friend WithEvents stsUpdateGrid As StatusStrip
     Friend WithEvents stsUpdateGridLabel1 As ToolStripStatusLabel
     Friend WithEvents btnInsert As Button
+    Friend WithEvents CRUDUpdateGrid As ContextMenuStrip
+    Friend WithEvents ViewRowToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -2,8 +2,10 @@
     Dim GlobalParms As New ESPOParms.Framework
     Dim GlobalSession As New ESPOParms.Session
     Dim DAL As New UpdateGridDAL
+
     Private _FirstEntry As String
     Private _LastEntry As String
+    Private _LastEditRow As Integer
     Public Shared DBVersion As String
     Public Shared ThemeSelection As Integer
 
@@ -27,6 +29,15 @@
         End Get
         Set(value As String)
             _LastEntry = value
+        End Set
+    End Property
+
+    Property LastEditRow As Integer
+        Get
+            Return _LastEditRow
+        End Get
+        Set(value As Integer)
+            _LastEditRow = value
         End Set
     End Property
 
@@ -82,6 +93,10 @@
             dgvUpdateGrid.Columns.Add("UPDATED2", "UPDATED2")
             Lock_RecordColumn()
             RightAlignNumerics()
+            If Me.LastEditRow > 0 Then
+                'dgvUpdateGrid.SelectedRows.Item(Me.LastEditRow).Selected = True
+            End If
+
         Catch ex As Exception
             Cursor = Cursors.Default
             MsgBox("Error in PopulateForm(): " & ex.Message)
@@ -116,7 +131,7 @@
 
     End Sub
 
-    Private Sub ClickHandler(sender As Object, e As MouseEventArgs) Handles Me.MouseClick
+    Private Sub ClickHandler(sender As Object, e As MouseEventArgs) Handles MyBase.MouseClick
         'Label24.Text = String.Format("Clicked ""{0}"" with the {1} mouse button.", sender.name, e.Button.ToString.ToLower)
         Select Case e.Button
             Case MouseButtons.Left
@@ -260,7 +275,7 @@
             UpdateDBfromGridDan()
         End If
 
-        'PopulateForm()
+        PopulateForm()
     End Sub
 
     Private Sub btnInsert_Click(sender As Object, e As EventArgs) Handles btnInsert.Click
@@ -273,7 +288,6 @@
                 Me.FirstEntry = dgvUpdateGrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Value
             End If
         End If
-
     End Sub
 
     Private Sub dgvUpdateGrid_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dgvUpdateGrid.CellEndEdit
@@ -283,9 +297,96 @@
                 If Me.FirstEntry <> Me.LastEntry Then
                     dgvUpdateGrid.Rows(e.RowIndex).Cells("UPDATED").Value = True
                     dgvUpdateGrid.Rows(e.RowIndex).Cells("UPDATED2").Value = "1"
+                    LastEditRow = e.RowIndex
                 End If
             End If
         End If
+    End Sub
 
+    Private Sub UndockChild()
+        If Me.MdiParent Is Nothing Then
+            Me.MdiParent = FromHandle(GlobalSession.MDIParentHandle)
+        Else
+            Me.MdiParent = Nothing
+        End If
+    End Sub
+
+    Private Sub UpdateGrid_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown
+
+    End Sub
+
+    Private Sub UpdateGrid_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        If e.KeyValue = Keys.F5 Then
+            btnRefresh.PerformClick()
+        ElseIf e.KeyValue = 27 Then 'ESC pressed
+            'Clear certain fields
+            btnRefresh.PerformClick()
+        ElseIf e.KeyValue = Keys.F7 Then
+            UndockChild()
+        ElseIf e.KeyValue = Keys.Return Or e.KeyValue = Keys.Enter Then
+            'btnAddCondition.PerformClick()
+        ElseIf (e.Control AndAlso (e.KeyCode = Keys.S)) Then
+            'btnShowSQLQuery.PerformClick()
+        ElseIf (e.Control AndAlso (e.Shift) AndAlso (e.KeyCode = Keys.C)) Then
+            btnClose.PerformClick()
+        End If
+    End Sub
+
+    Private Sub dgvUpdateGrid_MouseClick(sender As Object, e As MouseEventArgs) Handles dgvUpdateGrid.MouseClick
+        Dim hit As DataGridView.HitTestInfo = dgvUpdateGrid.HitTest(e.X, e.Y)
+
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+            'Clear any currently sellected rows ?
+            If hit.Type = DataGridViewHitTestType.Cell Then
+                'dgvHeaderList.Rows(hit.RowIndex).Cells(hit.ColumnIndex)
+                dgvUpdateGrid.ClearSelection()
+                Me.dgvUpdateGrid.Rows(hit.RowIndex).Selected = True
+                If hit.ColumnIndex >= 0 And hit.RowIndex >= 0 Then
+                    Me.dgvUpdateGrid.CurrentCell = Me.dgvUpdateGrid.Rows(hit.RowIndex).Cells(hit.ColumnIndex)
+                End If
+            End If
+            CRUDUpdateGrid.Show(Cursor.Position)
+        End If
+    End Sub
+
+    Private Sub ViewRowToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewRowToolStripMenuItem.Click
+        'Show form to view row selected:
+        Dim RecordID As Integer
+        Dim S21ItemCode As String
+        Dim ItemDescription As String
+        Dim SellingPrice As String
+        Dim CurrentPrice As String
+        Dim Profit As String
+        Dim Margin As String
+        Dim App As New ViewSelectedRow
+        Dim RowContent() As String
+        Dim IDX As Integer
+
+        Cursor = Cursors.Default
+        stsUpdateGridLabel1.Text = "View Row Selected..."
+        'stsFW100Label1.Text = "Loading List......"
+        Cursor = Cursors.WaitCursor
+        Refresh()
+        IDX = 0
+        ReDim RowContent(dgvUpdateGrid.Columns.Count)
+        For i As Integer = 2 To dgvUpdateGrid.Columns.Count - 1
+            If Not IsDBNull(dgvUpdateGrid.CurrentRow.Cells(i).Value) Then
+                If Not dgvUpdateGrid.CurrentRow.Cells(i).Value = Nothing Then
+                    RowContent(IDX) = dgvUpdateGrid.Columns(i).HeaderText & "=" & dgvUpdateGrid.CurrentRow.Cells(i).Value.ToString
+                Else
+                    RowContent(IDX) = dgvUpdateGrid.Columns(i).HeaderText & "=" & " "
+                End If
+            Else
+                RowContent(IDX) = dgvUpdateGrid.Columns(i).HeaderText & "=" & " "
+            End If
+            IDX += 1
+        Next
+
+        App.Visible = False
+        'App.GetParms(GlobalSession, GlobalParms)
+        App.PopulateForm(RowContent)
+        App.Show()
+        'pp.btnRefresh.PerformClick()
+        Cursor = Cursors.Default
     End Sub
 End Class

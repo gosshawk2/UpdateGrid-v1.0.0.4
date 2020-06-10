@@ -55,8 +55,8 @@
         stsFW100Label6.Text = String.Format("    Version {0}", My.Application.Info.Version.ToString) & "   "
         NormalToolStripMenuItem.Checked = True
         DarkToolStripMenuItem.Checked = False
-        IBMToolStripMenuItem.Checked = False
-        MYSQLToolStripMenuItem.Checked = True
+        IBMToolStripMenuItem.Checked = True
+        MYSQLToolStripMenuItem.Checked = False
 
         For Each c As Control In Controls
             AddHandler c.MouseClick, AddressOf ClickHandler
